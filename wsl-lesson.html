@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windows Subsystem for Linux (WSL)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600
+          &family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="wsl.css" />
+</head>
+<body>
+
+  <nav>
+      <ul class="nav-menu">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../boba_rankings.html">Boba Rankings</a></li>
+          <li><a href="../projects.html">Projects</a></li>
+          <li><a href="../calendar.html">Events Calendar</a></li>
+      </ul>
+  </nav>
+
+  <!-- Floating tooltip (escapes overflow:hidden on accordions) -->
+  <div id="floating-tooltip"></div>
+
+  <!-- Progress bar -->
+  <div id="progress-bar-wrap">
+    <div id="progress-bar-track">
+      <div id="progress-bar-fill"></div>
+    </div>
+    <div id="progress-label">0% complete</div>
+  </div>
+
+  <!-- Lesson header -->
+  <div class="lesson-header">
+    <p class="subtitle">// setup guide</p>
+    <h1>Windows Subsystem for Linux (WSL)</h1>
+  </div>
+
+  <div class="lesson-note">
+    💡 <strong>Note:</strong> If this doesn't work for your laptop,
+    it's not critical to set up — don't stress!
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 1 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 1</span>
+      <h2>Open PowerShell</h2>
+    </div>
+
+    <h3>What's a shell?</h3>
+    <p>
+      A <span class="term" tabindex="0">shell
+        <span class="term-tooltip">
+          A shell is a program that acts as an interface between
+          you and the operating system; you type commands, and it
+          interprets and runs them
+        </span>
+      </span>
+      is a set of commands you use to interact with the
+      <span class="term" tabindex="0">kernel
+        <span class="term-tooltip">
+          The kernel is the core of your operating system — it manages
+          hardware, memory, and processes directly.
+        </span>
+      </span>.
+      Different operating systems use different shells.
+    </p>
+
+    <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span>System Architecture Diagram</span>
+            <span class="chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-inner">
+                <div class="screenshot-wrap">
+                    <img src="wsl-images/shell-kernel.png" alt="diagram showing
+                              system architecture" class="screenshot" />
+                    <p class="screenshot-caption">
+                        source: LinkedIn, MOOC Course
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>Common shells explained</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <p>
+            <strong style="color:#4ade80">bash</strong> — Bourne Again SHell.
+            The default on most Linux systems and older Macs.
+            Very common in open-source tooling.
+          </p>
+          <p>
+            <strong style="color:#4ade80">zsh</strong> — Z Shell.
+            The default on modern Macs (macOS Catalina+).
+            Very similar to bash with quality-of-life improvements.
+          </p>
+          <p>
+            <strong style="color:#4ade80">Command Prompt</strong> —
+            Windows' older built-in shell. Less powerful than modern
+            alternatives.
+          </p>
+          <p>
+            <strong style="color:#4ade80">PowerShell</strong> —
+            Windows' modern shell. More powerful than Command Prompt,
+            and what we'll use to install WSL.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      Because bash and zsh are so similar, Linux and Mac users share most
+      commands — which is why we're setting up WSL on Windows!
+    </p>
+
+    <h3>How to open PowerShell</h3>
+    <ul>
+      <li>
+        Open the <strong>Start Menu</strong> and search for
+        <code>PowerShell</code>
+      </li>
+      <li>
+        Right-click <strong>Windows PowerShell</strong> →
+        <strong>Run as administrator</strong>
+      </li>
+    </ul>
+
+    <div class="quiz-block">
+      <h4>✦ Quick Check</h4>
+      <p class="quiz-question">
+        What is the relationship between a shell and a kernel?
+      </p>
+      <ul class="quiz-options">
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            They are the same thing
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, true)">
+            The shell lets you send commands to the kernel
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            The kernel is a type of shell
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            The shell is part of the hardware
+          </button>
+        </li>
+      </ul>
+      <p class="quiz-feedback"></p>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 2 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 2</span>
+      <h2>Install WSL</h2>
+    </div>
+
+    <h3>Run the install command</h3>
+    <p>
+      In PowerShell, type the following command and hit Enter. This will
+      start installing
+      <span class="term" tabindex="0">Ubuntu
+        <span class="term-tooltip">
+          Ubuntu is a popular, user-friendly Linux distribution. A
+          distribution packages the Linux kernel with software to make
+          a complete OS.
+        </span>
+      </span>.
+    </p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>PowerShell</span>
+        <button class="copy-btn"
+          onclick="copyCode(this, 'wsl --install')">Copy</button>
+      </div>
+      <pre>wsl --install</pre>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>What if I get an error?</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          Common causes:
+          <ul style="margin-top:0.5rem">
+            <li>
+              You might not be running PowerShell
+              <strong>as administrator</strong>. Try again with admin
+              rights
+            </li>
+            <li>
+              A Windows policy is blocking installation. Look at the error
+              message, which usually tells you what's needed
+            </li>
+            <li>
+              Your Windows version needs an update — run Windows Update
+              and try again
+            </li>
+          </ul>
+          <p style="margin-top:0.5rem">
+            Call a classmate, grutor, or prof over — the error message usually
+            explains the fix!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Create your Ubuntu account</h3>
+    <p>
+      Once the download finishes, it'll prompt you to create a
+      <strong>username</strong> and <strong>password</strong>. Do this!
+      You'll then be inside WSL (even if it doesn't look like much
+      changed).
+    </p>
+
+    <div class="lesson-note" style="border-left-color:#8ab4f8">
+      🔒 When typing your password,
+      <strong>nothing will appear on screen</strong> — that's normal.
+      It's still being registered.
+    </div>
+
+    <h3>Close WSL</h3>
+    <p>Simply close the PowerShell window. You're done with it for now.</p>
+
+    <div class="quiz-block">
+      <h4>✦ Quick Check</h4>
+      <p class="quiz-question">
+        Why might your password appear invisible when you type it
+        in the terminal?
+      </p>
+      <ul class="quiz-options">
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            The terminal is broken
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            You need to enable a setting to show passwords
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, true)">
+            It's a security feature — the terminal hides password
+            input by design
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            You mistyped your username
+          </button>
+        </li>
+      </ul>
+      <p class="quiz-feedback"></p>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 3 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 3</span>
+      <h2>Open Ubuntu</h2>
+    </div>
+
+    <h3>What is Ubuntu?</h3>
+    <p>
+      Ubuntu is a
+      <span class="term" tabindex="0">Linux distribution
+        <span class="term-tooltip">
+          A Linux distribution ("distro") bundles the Linux kernel with
+          software, tools, and a package manager into a complete
+          operating system. Examples: Ubuntu, Debian, Fedora.
+        </span>
+      </span>.
+      Linux is a kernel, but there are many ways to interact with it —
+      distributions are full operating systems built around that kernel.
+      Ubuntu is one of the most beginner-friendly distros.
+    </p>
+
+    <h3>How to open it</h3>
+    <p>
+      Find <strong>Ubuntu</strong> in the Start Menu and open it.
+      You're now in your Linux environment!
+    </p>
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 4 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 4</span>
+      <h2>Set Up Your Shell &amp; Learn Bash Commands</h2>
+    </div>
+
+    <h3>First commands to try</h3>
+
+    <p>Check which shell you're using:</p>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>bash</span>
+        <button class="copy-btn"
+          onclick="copyCode(this, 'echo $SHELL')">Copy</button>
+      </div>
+      <pre>echo $SHELL</pre>
+    </div>
+    <p>
+      The <code>echo</code> command prints text or a variable's value to
+      the terminal. Here, it tells you what shell is active.
+    </p>
+
+    <p>Keep Ubuntu up to date:</p>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>bash</span>
+        <button class="copy-btn"
+          onclick="copyCode(this, 'sudo apt update && sudo apt upgrade')"
+        >Copy</button>
+      </div>
+      <pre>sudo apt update && sudo apt upgrade</pre>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>What do sudo, apt update, and apt upgrade each do?</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <p>
+            <code>sudo</code> — "superuser do." Runs the command with
+            administrator
+            (<span class="term" tabindex="0">root
+              <span class="term-tooltip">
+                The "root" user is the all-powerful admin account on
+                Linux systems. sudo lets you borrow that power for a
+                single command.
+              </span>
+            </span>) privileges.
+          </p>
+          <p>
+            <code>apt update</code> — Refreshes the list of available
+            software packages from the internet.
+          </p>
+          <p>
+            <code>apt upgrade</code> — Actually installs the newer
+            versions of any outdated packages.
+          </p>
+          <p>
+            The <code>&&</code> runs both commands in sequence — if the
+            first succeeds, the second runs automatically.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Some more basic commands to get you started!</h3>
+
+    <table class="cmd-table">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>What it does</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ls</td>
+          <td>Lists contents of current directory</td>
+        </tr>
+        <tr>
+          <td>ls -a</td>
+          <td>
+            Lists all contents including hidden files
+            (the flag <code>-a</code> = "all")
+          </td>
+        </tr>
+        <tr>
+          <td>pwd</td>
+          <td>Stands for print working directory, which shows your current path</td>
+        </tr>
+        <tr>
+          <td>mkdir folder_name</td>
+          <td>Creates a new folder/directory</td>
+        </tr>
+        <tr>
+          <td>cd folder_name</td>
+          <td>Moves you into the folder</td>
+        </tr>
+        <tr>
+          <td>cd ..</td>
+          <td>Go up to the parent directory</td>
+        </tr>
+        <tr>
+          <td>cd ~</td>
+          <td>
+            Go to your home directory (<code>/home/[username]</code>)
+          </td>
+        </tr>
+        <tr>
+          <td>touch file_name.txt</td>
+          <td>Create a new empty file. You can choose the file type</td>
+        </tr>
+        <tr>
+          <td>rm file_name</td>
+          <td>Removes a file. There's no trash/recycle bin — deletions are permanent,
+              so use it carefully!
+          </td>
+        </tr>
+        <tr>
+          <td>rm -i file_name</td>
+          <td>Removes a file, but with caution. This will prompt you to confirm before
+              deleting each file. It's good to use if you want to be careful
+              (<code>-i</code> = "interactive")</td>
+        </tr>
+        <tr>
+          <td>rm -rf folder_name</td>
+          <td>This is the typical way to remove a directory and all its contents. 
+              Use with caution! There are some safeguards to removing directories
+              since you cannot remove them withouth certain flags
+              (<code>-r</code> = "recursive" and <code>-f</code> = "force")
+          </td>
+        </tr>
+        <tr>
+          <td>cat file_name</td>
+          <td>Short fo "concatenate." This displays the contents of a file directly
+              in the terminal. Most commonly used to quickly read a file without
+              opening an editor</td>
+        </tr>
+        <tr>
+          <td>></td>
+          <td>The <code>></code> operator redirects output into a file, creating
+              it if it doesn't exist and <strong>overwriting</strong> it if it does
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Practice checklist: do these!</h3>
+    <p>Click each item as you complete it:</p>
+    <ul class="checklist" id="practice-checklist">
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>echo $SHELL</code> and see the output of $SHELL
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>sudo apt update &amp;&amp; sudo apt upgrade</code>
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>ls</code> and then <code>ls -a</code>
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>pwd</code> to see your home path
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>mkdir workshop</code> then <code>ls</code>
+        to confirm it appeared
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>cd workshop</code> to enter it
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>touch workshop.txt</code> in the workshop directory to create a file
+      </li>
+      <li onclick="toggleCheck(this)">
+        <span class="check-icon">✓</span>
+        Run <code>echo "Hello, world" > workshop.txt</code> to overwrite the file with
+        "Hello, world"
+      </li>
+    </ul>
+
+    <div class="quiz-block">
+      <h4>✦ Quick Check</h4>
+      <p class="quiz-question">
+        You're inside <code>/home/tutorial/workshop</code> and want to
+        return to <code>/home/tutorial</code>. Which command do you use?
+      </p>
+      <ul class="quiz-options">
+        <li>
+          <button onclick="checkAnswer(this, false)">cd ~</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, true)">cd ..</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">cd /home</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">ls -a</button>
+        </li>
+      </ul>
+      <p class="quiz-feedback"></p>
+    </div>
+
+    <div class="quiz-block">
+      <h4>✦ Challenge Check</h4>
+      <p class="quiz-question">
+        If <code>rm -rf</code> means to forcefully recurse through a directory 
+        and delete it, then how would you remove a directory with prompts (i.e. caution)? 
+      </p>
+      <ul class="quiz-options">
+        <li>
+          <button onclick="checkAnswer(this, false)">rm</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">rm -irf</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">rm -i</button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, true)">rm -ir</button>
+        </li>
+      </ul>
+      <p class="quiz-feedback">Also, the order of flags doesn't matter! 
+      -irf is the same as -rif or -fir</p>
+    </div>
+
+    <h3>Enabling copy/paste in Ubuntu</h3>
+    <p>
+      By default, <kbd>Ctrl+V</kbd> doesn't paste in the terminal.
+      To fix it:
+    </p>
+    <ol>
+      <li>
+        Right-click the Ubuntu title bar → <strong>Properties</strong>
+      </li>
+      <li>
+        Under <em>Edit Options</em>, check
+        <strong>"Use Ctrl+Shift+C/V as Copy/Paste"</strong>
+      </li>
+      <li>Click OK</li>
+    </ol>
+    <p>
+      After that, use <kbd>Ctrl+Shift+V</kbd> to paste into the terminal.
+    </p>
+
+    <h3>
+      Terminal game (for more practice)
+      <span class="optional-badge">OPTIONAL</span>
+    </h3>
+    <p>
+      Make sure you're in your <code>workshop</code> directory, then run:
+    </p>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>bash</span>
+        <button class="copy-btn" onclick="copyCode(this,
+          'sudo apt install unzip && mkdir -p terminal_game && ' +
+          'curl -L https://cs.hmc.edu/~ccalingo/alien-nostromo.zip ' +
+          '-o temp.zip && unzip temp.zip -d terminal_game && rm temp.zip'
+        )">Copy</button>
+      </div>
+      <pre>sudo apt install unzip && mkdir -p terminal_game && \
+curl -L https://cs.hmc.edu/~ccalingo/alien-nostromo.zip \
+  -o temp.zip && \
+unzip temp.zip -d terminal_game && rm temp.zip</pre>
+    </div>
+    <p>
+      Then <code>ls</code> to confirm it worked, <code>cd</code> into
+      the new directory "terminal_game", and run <code>cat README.md</code> to get
+      started. The game uses the commands you just learned!
+    </p>
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 5 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 5</span>
+      <h2>Understand Your File System</h2>
+    </div>
+
+    <p>
+      WSL creates a virtual hard disk that lives inside Windows. Your
+      Linux files are in a separate space from your Windows files. Click
+      through to visually see where your files are.
+    </p>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>Finding your Ubuntu files in Windows Explorer</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ol>
+            <li>Open <strong>File Explorer</strong></li>
+            <li>
+              In the left pane, scroll down to <strong>Linux</strong>
+            </li>
+            <li>
+              Click into
+              <strong>Ubuntu → home → [your username]</strong>
+            </li>
+          </ol>
+          <p style="margin-top:0.6rem">
+            That folder is your <code>~</code> home directory — the same
+            place you land when you open Ubuntu.
+          </p>
+          <div class="screenshot-wrap">
+            <img src="wsl-images/linux-location.png" alt="screenshot of file explorer
+                      showing where linux is located" class="screenshot" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        <span>Accessing your Windows files from inside Ubuntu</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <p>Your Windows files live at:</p>
+          <div class="code-block" style="margin:0.5rem 0">
+            <div class="code-block-header">
+              <span>path</span>
+              <button class="copy-btn"
+                onclick="copyCode(this,
+                  '/mnt/c/Users/Windows_account_name')"
+              >Copy</button>
+            </div>
+            <pre>/mnt/c/Users/Windows_account_name</pre>
+          </div>
+          <p>To navigate there:</p>
+          <div class="code-block" style="margin:0.5rem 0">
+            <div class="code-block-header">
+              <span>bash</span>
+              <button class="copy-btn"
+                onclick="copyCode(this,
+                  'cd /mnt/c/Users/Windows_account_name')"
+              >Copy</button>
+            </div>
+            <pre>cd /mnt/c/Users/Windows_account_name</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-block">
+      <h4>✦ Quick Check</h4>
+      <p class="quiz-question">
+        Where are your Ubuntu home files located in Windows
+        File Explorer?
+      </p>
+      <ul class="quiz-options">
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            C:\Users\[username]\Ubuntu
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            /mnt/c/Users/[username]
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, true)">
+            Linux → Ubuntu → home → [username] in File Explorer
+          </button>
+        </li>
+        <li>
+          <button onclick="checkAnswer(this, false)">
+            Documents → WSL → home
+          </button>
+        </li>
+      </ul>
+      <p class="quiz-feedback"></p>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── STEP 6 ──────────────────────────────────────────────── -->
+  <div class="step-section">
+    <div class="step-header">
+      <span class="step-badge">STEP 6</span>
+      <h2>Set Up VS Code with WSL</h2>
+    </div>
+
+    <p><em>This step assumes you have VS Code installed.</em></p>
+    
+    <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span>Open a folder or file from Ubuntu once so that VS Code can access it</span>
+          <span class="chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-inner">
+                <p style="margin-bottom:0.6rem">
+                  We'll do this with the "workshop" directory that you made.
+                </p>
+                <ol>
+                    <li>
+                        In VS Code, click on <strong>Open Folder</strong> 
+                        (can also be found in File → Open Folder)
+                    </li>
+                    <li>
+                        The File Explorer will open up. In the file picker's 
+                        address bar, type:
+                    </li>
+                    <div class="code-block" style="margin:0.5rem 0">
+                        <div class="code-block-header">
+                            <span>Windows path</span>
+                            <button class="copy-btn"
+                              onclick="copyCode(this,
+                                '\\wsl.localhost')"
+                            >Copy</button>
+                        </div>
+                        <pre>\\wsl.localhost</pre>
+                    </div>
+                    <div class="screenshot-wrap">
+                        <img src="wsl-images/file-picker.png" alt="screenshot
+                                  of file explorer showing file picker address
+                                  bar" class="screenshot" />
+                    </div>
+                    <li>
+                        Navigate to your home directory: Ubuntu → home → [your username]
+                    </li>
+                    <li>
+                        Choose the folder you want to work on in VS Code. In this case
+                        we'll choose "workshop"
+                    </li>
+                    <li>
+                        Finally, trust Ubuntu! VS Code will show one or more prompts
+                        asking if you trust <code>wsl.localhost</code>. Accept all of them.
+                        After that, VS Code can fully access and edit files in your Ubuntu
+                        environment.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span>How to set WSL as your default terminal in VS Code</span>
+            <span class="chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-inner">
+                <ol>
+                    <li>In VS Code, hold <strong>Ctrl + Shift + P</strong>
+                        to open the Command Palette.
+                    </li>
+                    <li>Search for "Terminal: Select Default Profile"</li>
+                    <li>
+                        Choose the default terminal you want to use, which in this case 
+                        will be WSL. 
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span>Bonus tip: Open VS Code from the terminal</span>
+            <span class="chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+            <div class="accordion-inner">
+                Once set up, you can launch VS Code on any file directly from Ubuntu/WSL, 
+                or any terminal, by running it with the command <code>code filename</code>:
+            </div>
+            <div class="code-block">
+                <div class="code-block-header">
+                    <span>any terminal</span>
+                    <button class="copy-btn"
+                        onclick="copyCode(this, 'code workshop.txt')"
+                    >Copy</button>
+                </div>
+                <pre>code workshop.txt</pre>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <hr />
+
+  <div class="step-section">
+      <div class="step-header">
+          <span class="step-badge">SUMMARY</span>
+          <h2>WSL allows you to run Linux</h2>
+      </div>
+          What we did was
+          <ul>
+              <li>
+                  Insall Windows Subsystem for Linux
+              </li>
+              <li>
+                  Use WSL as Ubuntu, and practiced using the Ubuntu (bash) terminal
+              </li>
+              <li>
+                  Set up VS Code to be able to access your Linux Virtual Hard Disk 
+              </li>
+              <li>
+                  Set up VS Code's terminal view to use WSL/Ubuntu
+              </li>
+          </ul>
+          <p style="margin-top:0.5rem">
+              Remember, your Linux files are located (and completely) contained on the
+              Virtual Hard Disk side! If you use Linux to develop things but need access
+              to your Windows files, you should probably do some research on that.
+          </p>
+
+          <h3>When should I use WSL?</h3>
+          <ul>
+              <li>
+                  <strong>Web Development:</strong> which are often built with Unix 
+                  in mind
+              </li>
+              <li>
+                  <strong>Open source projects:</strong> most are written with instructions
+                  for Linux/Mac
+              </li>
+              <li>
+                  <strong>Data science and ML:</strong> Python, Jupyter, PyTorch, etc. all
+                  work more smoothly in a Unix environment
+              </li>
+              <li>
+                  <strong>Learning systems programming or CS fundamentals</strong>
+              </li>
+          </ul>
+
+          <h3>When should I develop in the Windows side?</h3>
+          <ul>
+              <li>
+                  Building Windows desktop apps (WPF, WinForms, UWP)
+              </li>
+              <li>
+                  Anything using Windows-specific APIs or the registry
+              </li>
+              <li>
+                  Game development with engines like Unity or Unreal, which have native
+                  Windows tooling
+              </li>
+              <li>
+                  .NET development (though this has become more cross-platform in recent
+                  years)
+              </li>
+          </ul>
+      
+      <div class="quiz-block">
+          <h4>✦ Final Check</h4>
+          <p class="quiz-question">
+          Which of the following correctly summarizes WSL's purpose?
+          </p>
+          <ul class="quiz-options">
+              <li>
+              <button onclick="checkAnswer(this, false)">
+                  It replaces Windows with Linux entirely
+              </button>
+              </li>
+              <li>
+              <button onclick="checkAnswer(this, true)">
+                  It lets you run a Linux environment (with bash commands)
+                  inside Windows
+              </button>
+              </li>
+              <li>
+              <button onclick="checkAnswer(this, false)">
+                  It's a tool only needed for web development
+              </button>
+              </li>
+              <li>
+              <button onclick="checkAnswer(this, false)">
+                  It installs Ubuntu as a dual-boot option
+              </button>
+              </li>
+          </ul>
+          <p class="quiz-feedback"></p>
+      </div>
+  </div>
+  
+  <hr />
+
+  <div class="lesson-footer">
+    // end of lesson — you're ready to go 🎉
+  </div>
+  </div>
+
+  <script src="wsl.js"></script>
+</body>
+</html>
