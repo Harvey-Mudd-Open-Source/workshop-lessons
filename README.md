@@ -7,8 +7,8 @@ The code and much of the README.md was generated with Claude.ai and
 is intended to be used by people who can navigate this code fairly
 well and make edits where they want.
 
-You can view this project here: 
-[https://cs.hmc.edu/~ccalingo/projects/wsl-lesson.html](https://cs.hmc.edu/~ccalingo/projects/wsl-lesson.html)
+You can view this project by [clicking here](churslic.github.io/
+wsl-lesson/wsl-lesson.html)
 
 ## Developer wishlist
 - Take this project so that you do not have to directly code HTML in the main
