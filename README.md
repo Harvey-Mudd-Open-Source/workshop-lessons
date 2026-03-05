@@ -34,9 +34,9 @@ You can view a sample of this project here:
 ## File Structure 
 
 ```
-lesson.html   — lesson content and markup
+lesson.html          — lesson content and markup
 lesson.css           — all styles for the lesson
-lesson.js         — all interactive functionality
+lesson.js            — all interactive functionality
 ```
 
 `lesson.html` links to `lesson.css` and `lesson.js`. 
