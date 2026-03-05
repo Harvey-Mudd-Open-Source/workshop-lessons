@@ -18,14 +18,24 @@ You can view a sample of this project here:
   looked different.
 
 ## Beginner-ish Instructions for contributing to this repo
-- Fork the repo
-- Clone locally to your laptop
-  - Use File Explorer/Finder to double-click/open the HTML file to see your 
-    changes
-- Use branching if you are contributing significant code changes or new 
-  features
-- Git add, commit, and push!
-- Submit pull request
+This assumes you have git set up and ready to go! There will be some 
+authentication you need to do. 
+
+- *Fork* the repo to your GitHub account <code>git clone</code> locally to your 
+  laptop.
+  - If you have already done this, then run <code>git status</code> to check if
+    you are up to date. Always make sure "main" is up to date! If not, then do
+    <code>git pull</code>
+- Create a *branch* and *checkout* (because it's just standard industry 
+  practice), even if your edit is small. This is because "main" is treated as 
+  the stable product that we don't want to mess with unless we're absolutely 
+  sure.
+- Make your edits!
+  - Use File Explorer/Finder to double-click and open the HTML file to see your 
+    changes in a web browser.
+- Git *add*, *commit*, and *push*!
+- Submit pull request. At this stage, your changes will be reviewed and 
+  determined if it's acceptable for merging to main.
 
 *Instructions too vague? Someone should change it. Or ask AI to help.*
 
