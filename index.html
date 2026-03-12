@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workshop Lessons Homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600
+              &family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="lesson.css" />
+    <link rel="icon" href="wally.png" />
+</head>
+
+<body>
+    <!-- Floating tooltip -->
+    <div id="floating-tooltip"></div>
+
+    <!-- Progress bar (not needed on a homepage, but could be enabled)
+    <div id="progress-bar-wrap">
+        <div id="progress-bar-track">
+            <div id="progress-bar-fill"></div>
+        </div>
+        <div id="progress-label">0% complete</div>
+    </div> -->
+
+    <!-- Lesson header, or in this case the title -->
+    <div class="lesson-header">
+        <p class="subtitle">// welcome!</p>
+        <h1>CS Dept Workshop Lessons</h1>
+    </div> 
+
+    <hr />
+
+    <h3>About</h3>
+    <p>
+        These workshop lessons and info pages are meant to be supplemental and 
+        catered towards extra professional development. We hope to make this a 
+        space for everyone to learn and contribute to!
+    </p>
+
+    <h3>How can I contribute?</h3>
+    <p>
+        We encourage contributions of all kinds, even pull requests for 
+        clarifying language and typo fixes. The goal is to get you comfortable
+        with contributing to a git repository. 
+    </p>
+
+    <div class="lesson-note">
+        💡 If you're not familiar with git, try this resource: [url coming soon]
+    </div>
+
+    <p>
+        If you're comfortable with git already, it's recommended to check 
+        out the 
+        <a href="https://github.com/Harvey-Mudd-Open-Source/workshop-lessons" 
+           target="_blank">
+            README.md
+        </a> of this repository. Try adapting this lesson style first! However,
+        you are also welcome to create your own style if you would like.
+    </p>
+
+    <!-- Make sure this list is in alphabetical order -->
+    <h3>Lessons</h3>
+    <table class="cmd-table">
+        <thead>
+            <th>Lesson</th>
+            <th>About</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a href="wsl.html" target="_blank">
+                    Setting up WSL
+                    </a>
+                </td>
+                <td>
+                    This lesson helps Windows users set up the Windows
+                    Subsystem for Linux
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="terminal-fun.html" target="_blank">
+                        Terminal Fun
+                    </a>
+                </td>
+                <td>
+                    This lesson goes through some interesting ways to
+                    interact with your built in terminal. The requirements are 
+                    using a more "modern" Mac that already uses the zsh shell, 
+                    a Windows machine with WSL already installed, or a Linux 
+                    Distribution.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="lesson.js"></script>
+
+</body>
+
+</html>
+
